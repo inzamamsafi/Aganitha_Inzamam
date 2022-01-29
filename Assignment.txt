@@ -1,0 +1,47 @@
+Codes that I have used:
+
+# installing docker and starting it
+sudo apt install docker.io   
+sudo systemctl enable docker    
+        
+# pulling pstgres image from docker hub                   
+sudo docker pull postgres                   						
+sudo docker images  
+
+# Creating a Directory for postgres to communicate with local files
+mkdir -p $HOME/docker/volumes/postgres      
+
+# Now starting the postgres container
+sudo docker run --rm   --name my-docker -e POSTGRES_PASSWORD=postgres -d -p 5432:5432 -v $HOME/docker/volumes/postgres:/var/lib/postgresql/data  postgres
+sudo docker exec -it my-docker psql -U postgres
+
+# creating a database named My_database and connecting to it
+CREATE DATABASE My_database;
+\c My_database;                              
+
+#Now creating a table weight_height in My_database 
+
+CREATE TABLE weight_height
+(Gender varchar,
+Height numeric(5),
+Weight numeric(5));
+
+
+#Importing data from weight_height.csv  and storing it to our table in My_database 
+
+\copy weight_height from '/var/lib/postgresql/data/weight_height.csv' delimiter ',' csv header;
+
+# for verification 
+
+SELECT * FROM weight_height;
+
+###
+# now creating a jupyter docker container and starting it
+docker run -p 8888:8888 jupyter/scipy-notebook:b418b67c225b
+
+
+
+
+
+
+
